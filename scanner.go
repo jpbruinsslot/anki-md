@@ -1,6 +1,3 @@
-// Sources:
-// - https://blog.gopheracademy.com/advent-2014/parsers-lexers/
-// - https://github.com/benbjohnson/sql-parser
 package anki
 
 import (
