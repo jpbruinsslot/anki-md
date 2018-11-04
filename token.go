@@ -8,6 +8,7 @@ const (
 	EOF
 	WS
 
+	// Keywords
 	FIELD
 	CARD
 )

@@ -9,12 +9,25 @@ import (
 
 func TestScanner_Scan(t *testing.T) {
 	var tests = []struct {
-		s   string
-		tok anki.Token
-		lit string
+		s   string     // The input string
+		tok anki.Token // The token that should be returned
+		lit string     // The literal string the token represents
 	}{
-		{s: ``, tok: anki.EOF},
-		{s: `%%`, tok: anki.FIELD},
+		// Special tokens
+		// {s: ``, tok: anki.EOF},
+		//
+		// {s: `%%`, tok: anki.FIELD},
+		// {s: `%%This is a field`, tok: anki.FIELD, lit: "This is a field"},
+		// {s: `%%This is a field%`, tok: anki.FIELD, lit: "This is a field%"},
+		// {s: `%%This is a field% `, tok: anki.FIELD, lit: "This is a field% "},
+		// {s: `%%This is a field%%`, tok: anki.FIELD, lit: "This is a field"},
+
+		{s: `---`, tok: anki.CARD, lit: "---"},
+		// {s: `--x`, tok: anki.ILLEGAL},
+		// {s: `-xx`, tok: anki.ILLEGAL},
+		// {s: `----`}
+		// {s: `--`}
+		// {s: `-`}
 	}
 
 	for i, tt := range tests {
