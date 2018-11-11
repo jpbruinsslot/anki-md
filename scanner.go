@@ -26,7 +26,6 @@ func (s *Scanner) Scan() (token Token, pos Pos, lit string) {
 
 	switch {
 	case isPercent(ch):
-		s.r.unread()
 		return s.scanField()
 	case isHyphen(ch):
 		s.r.unread()
@@ -35,74 +34,74 @@ func (s *Scanner) Scan() (token Token, pos Pos, lit string) {
 		// Otherwise read the individual character
 		switch ch {
 		case eof:
-			return EOF, ""
+			return EOF, pos, ""
 		}
 	}
 
-	return ILLEGAL, string(ch)
+	return ILLEGAL, pos, string(ch)
 }
 
-func (s *Scanner) scanField() (token Token, lit string) {
+func (s *Scanner) scanField() (token Token, pos Pos, lit string) {
 	// Save the position of the field
-	_, pos := s.r.read()
-	s.r.unread()
+	_, pos = s.r.curr()
 
 	// Create buffer, here we'll write the runes into
 	var buf bytes.Buffer
 
-	// ch := s.read()
-	// for isPercent(ch) {
-	// 	ch = s.read()
-	// }
-
 	// The next character should be another percent
-	ch := s.read()
+	ch, _ := s.r.read()
 	if !isPercent(ch) {
-		s.unreadRepeat(2)
-		return ILLEGAL, string(ch)
+		s.r.unread()
+		return ILLEGAL, pos, string(ch)
 	}
 
 	// Read until the next double percent, or eof.
 	// When it is found, place the reader two steps back
 	for {
-		ch = s.read()
+		ch, _ = s.r.read()
 		if ch == eof {
 			break
 		} else if isPercent(ch) {
-			chNext := s.read()
+
+			// Peak ahead
+			chNext, _ := s.r.read()
+			s.r.unread()
+
 			if isPercent(chNext) {
-				s.unreadRepeat(2)
+				s.r.unread()
 				break
 			}
-			s.unread()
 		}
 
 		// Write runes into buffer
 		_, _ = buf.WriteRune(ch)
 	}
 
-	return FIELD, buf.String()
+	return FIELD, pos, buf.String()
 }
 
-func (s *Scanner) scanCard() (token Token, lit string) {
+func (s *Scanner) scanCard() (token Token, pos Pos, lit string) {
+	// Save the position of the field
+	ch, pos := s.r.curr()
+
 	// Create buffer, here we'll write the runes into
 	var buf bytes.Buffer
 
 	// When a hyphen is found it should be three consecutive hyphens
 	if !isCard(s, 0) {
 		fmt.Println("!card")
-		return ILLEGAL, string(s.read())
+		return ILLEGAL, pos, string(ch)
 	}
 
 	for {
-		ch := s.read()
+		ch, _ := s.r.read()
 		fmt.Println(string(ch))
 		if ch == eof {
 			fmt.Println("eof")
 			break
 		} else if !isHyphen(ch) {
 			fmt.Println("!hyphen")
-			s.unread()
+			s.r.unread()
 			break
 		} else {
 			fmt.Println("writeRune")
@@ -110,17 +109,16 @@ func (s *Scanner) scanCard() (token Token, lit string) {
 		}
 	}
 
-	return CARD, buf.String()
+	return CARD, pos, buf.String()
 }
 
 // Given a found `-` hyphen, the next three characters should also be `-`
 func isCard(s *Scanner, depth int) bool {
-	ch := s.read()
+	ch, _ := s.r.read()
 	fmt.Printf("d: %d, ch: %s\n", depth, string(ch))
 
 	if !isHyphen(ch) || depth > 2 {
-		// TODO: return regular text
-		// s.unreadRepeat(depth + 1)
+		s.r.unreadRepeat(depth + 1)
 		return false
 	}
 
@@ -129,7 +127,7 @@ func isCard(s *Scanner, depth int) bool {
 	}
 
 	fmt.Println("true")
-	// s.unreadRepeat(depth + 1)
+	s.r.unreadRepeat(depth + 1)
 	return true
 }
 
@@ -199,8 +197,10 @@ func (r *reader) read() (ch rune, pos Pos) {
 		ch = '\n'
 	}
 
-	// Update index of the buffer
+	// Update index, character, and position of the buffer
 	r.i = (r.i + 1) % len(r.buf) // ???
+	buf := &r.buf[r.i]
+	buf.ch, buf.pos = ch, r.pos
 
 	// Update position of the buffer, increase line
 	// when newline is encountered
@@ -232,4 +232,10 @@ func (r *reader) curr() (ch rune, pos Pos) {
 // unread pushes the previously read rune back onto the buffer
 func (r *reader) unread() {
 	r.n++
+}
+
+func (r *reader) unreadRepeat(times int) {
+	for i := 1; i <= times; i++ {
+		r.unread()
+	}
 }

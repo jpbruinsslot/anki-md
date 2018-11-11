@@ -23,7 +23,7 @@ func TestScanner_Scan(t *testing.T) {
 		// {s: `%%This is a field%%`, tok: anki.FIELD, lit: "This is a field"},
 
 		{s: `---`, tok: anki.CARD, lit: "---"},
-		// {s: `--x`, tok: anki.ILLEGAL},
+		{s: `--x`, tok: anki.ILLEGAL},
 		// {s: `-xx`, tok: anki.ILLEGAL},
 		// {s: `----`}
 		// {s: `--`}
@@ -32,12 +32,12 @@ func TestScanner_Scan(t *testing.T) {
 
 	for i, tt := range tests {
 		s := anki.NewScanner(strings.NewReader(tt.s))
-		tok, lit := s.Scan()
+		tok, pos, lit := s.Scan()
 
 		if tt.tok != tok {
-			t.Errorf("%d. %q token mismatch: exp=%q got=%q <%q>", i, tt.s, tt.tok, tok, lit)
+			t.Errorf("%d. %q token mismatch: pos=%q exp=%q got=%q <%q>", i, tt.s, pos, tt.tok, tok, lit)
 		} else if tt.lit != lit {
-			t.Errorf("%d. %q literal mismatch: exp=%q got=%q", i, tt.s, tt.lit, lit)
+			t.Errorf("%d. %q literal mismatch: pos=%q exp=%q got=%q", i, tt.s, pos, tt.lit, lit)
 		}
 	}
 }
