@@ -21,13 +21,14 @@ func TestScanner_Scan(t *testing.T) {
 		// {s: `%%This is a field%`, tok: anki.FIELD, lit: "This is a field%"},
 		// {s: `%%This is a field% `, tok: anki.FIELD, lit: "This is a field% "},
 		// {s: `%%This is a field%%`, tok: anki.FIELD, lit: "This is a field"},
-
-		{s: `---`, tok: anki.CARD, lit: "---"},
-		{s: `--x`, tok: anki.ILLEGAL},
+		// {s: `%%This is a field%%`, tok: anki.FIELD, lit: "This is a field"},
+		//
+		// {s: `---`, tok: anki.CARD, lit: "---"},
+		// {s: `--x`, tok: anki.ILLEGAL},
 		// {s: `-xx`, tok: anki.ILLEGAL},
-		// {s: `----`}
-		// {s: `--`}
-		// {s: `-`}
+		{s: `----`, tok: anki.ILLEGAL},
+		// {s: `--`},
+		// {s: `-`},
 	}
 
 	for i, tt := range tests {

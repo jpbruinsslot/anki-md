@@ -52,7 +52,7 @@ func (s *Scanner) scanField() (token Token, pos Pos, lit string) {
 	ch, _ := s.r.read()
 	if !isPercent(ch) {
 		s.r.unread()
-		return ILLEGAL, pos, string(ch)
+		return ILLEGAL, pos, ""
 	}
 
 	// Read until the next double percent, or eof.
@@ -82,7 +82,7 @@ func (s *Scanner) scanField() (token Token, pos Pos, lit string) {
 
 func (s *Scanner) scanCard() (token Token, pos Pos, lit string) {
 	// Save the position of the field
-	ch, pos := s.r.curr()
+	_, pos = s.r.curr()
 
 	// Create buffer, here we'll write the runes into
 	var buf bytes.Buffer
@@ -90,7 +90,7 @@ func (s *Scanner) scanCard() (token Token, pos Pos, lit string) {
 	// When a hyphen is found it should be three consecutive hyphens
 	if !isCard(s, 0) {
 		fmt.Println("!card")
-		return ILLEGAL, pos, string(ch)
+		return ILLEGAL, pos, ""
 	}
 
 	for {
