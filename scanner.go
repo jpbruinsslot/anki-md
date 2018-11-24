@@ -23,6 +23,8 @@ func (s *Scanner) Scan() (token Token, pos Pos, lit string) {
 	ch, pos := s.r.read()
 
 	switch {
+	case isWhitespace(ch):
+		return s.scanWhitespace()
 	case isPercent(ch):
 		return s.scanField()
 	case isHyphen(ch):
@@ -51,6 +53,14 @@ func (s *Scanner) scanField() (token Token, pos Pos, lit string) {
 	if !isPercent(ch) {
 		s.r.unread()
 		return ILLEGAL, pos, ""
+	}
+
+	// We read until we see the first non-whitespace character
+	for {
+		if ch, _ = s.r.read(); !isWhitespace(ch) {
+			s.r.unread()
+			break
+		}
 	}
 
 	// Read until:
@@ -125,6 +135,31 @@ func (s *Scanner) scanCard() (token Token, pos Pos, lit string) {
 	}
 
 	return CARD, pos, buf.String()
+}
+
+func (s *Scanner) scanWhitespace() (token Token, pos Pos, lit string) {
+	// Save the position of the field
+	_, pos = s.r.curr()
+
+	// Create buffer, here we'll write the runes into
+	var buf bytes.Buffer
+
+	// Read until:
+	// * eof
+	// * discontinuation of whitespaces
+	for {
+		ch, _ := s.r.read()
+		if ch == eof {
+			break
+		} else if !isWhitespace(ch) {
+			s.r.unread()
+			break
+		}
+
+		_, _ = buf.WriteRune(ch)
+	}
+
+	return WS, pos, buf.String()
 }
 
 // FIXME: make it a struct method
