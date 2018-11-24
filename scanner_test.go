@@ -14,21 +14,25 @@ func TestScanner_Scan(t *testing.T) {
 		lit string     // The literal string the token represents
 	}{
 		// Special tokens
-		// {s: ``, tok: anki.EOF},
-		//
-		// {s: `%%`, tok: anki.FIELD},
-		// {s: `%%This is a field`, tok: anki.FIELD, lit: "This is a field"},
-		// {s: `%%This is a field%`, tok: anki.FIELD, lit: "This is a field%"},
-		// {s: `%%This is a field% `, tok: anki.FIELD, lit: "This is a field% "},
-		// {s: `%%This is a field%%`, tok: anki.FIELD, lit: "This is a field"},
-		// {s: `%%This is a field%%`, tok: anki.FIELD, lit: "This is a field"},
-		//
-		// {s: `---`, tok: anki.CARD, lit: "---"},
-		// {s: `--x`, tok: anki.ILLEGAL},
-		// {s: `-xx`, tok: anki.ILLEGAL},
-		{s: `----`, tok: anki.ILLEGAL},
-		// {s: `--`},
-		// {s: `-`},
+		{s: ``, tok: anki.EOF},
+
+		// Field
+		{s: `%%`, tok: anki.FIELD},
+		{s: `%%This is a field`, tok: anki.FIELD, lit: "This is a field"},
+		{s: `%%This is a field%`, tok: anki.FIELD, lit: "This is a field%"},
+		{s: `%%This is a field% `, tok: anki.FIELD, lit: "This is a field% "},
+		{s: `%%This is a field%%`, tok: anki.FIELD, lit: "This is a field"},
+		{s: `%%This is a field%%`, tok: anki.FIELD, lit: "This is a field"},
+		{s: `%%This is a field-`, tok: anki.FIELD, lit: "This is a field-"},
+		{s: `%%This is a field--`, tok: anki.FIELD, lit: "This is a field--"},
+
+		// Card
+		{s: `-`},
+		{s: `--`},
+		{s: `---`, tok: anki.CARD, lit: "---"},
+		{s: `----`, tok: anki.CARD, lit: "---"},
+		{s: `-xx`, tok: anki.ILLEGAL},
+		{s: `--x`, tok: anki.ILLEGAL},
 	}
 
 	for i, tt := range tests {

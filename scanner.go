@@ -1,10 +1,8 @@
-// https://github.com/influxdata/influxql/blob/master/scanner.go
 package anki
 
 import (
 	"bufio"
 	"bytes"
-	"fmt"
 	"io"
 )
 
@@ -55,8 +53,10 @@ func (s *Scanner) scanField() (token Token, pos Pos, lit string) {
 		return ILLEGAL, pos, ""
 	}
 
-	// Read until the next double percent, or eof.
-	// When it is found, place the reader two steps back
+	// Read until:
+	// * double percent
+	// * eof
+	// * card
 	for {
 		ch, _ = s.r.read()
 		if ch == eof {
@@ -71,6 +71,17 @@ func (s *Scanner) scanField() (token Token, pos Pos, lit string) {
 				s.r.unread()
 				break
 			}
+		} else if isHyphen(ch) {
+
+			// We start at depth 1, because
+			// we already read the first hyphen
+			if isCard(s, 1) {
+				break
+			}
+
+			// isCard will step back one too much, we
+			// want to write the initial hyphen
+			s.r.read()
 		}
 
 		// Write runes into buffer
@@ -89,33 +100,39 @@ func (s *Scanner) scanCard() (token Token, pos Pos, lit string) {
 
 	// When a hyphen is found it should be three consecutive hyphens
 	if !isCard(s, 0) {
-		fmt.Println("!card")
 		return ILLEGAL, pos, ""
 	}
 
+	// Read until:
+	// * eof
+	// * not a hyphen
+	// * more than 3 consecutive hyphens
+	i := 0
 	for {
 		ch, _ := s.r.read()
-		fmt.Println(string(ch))
 		if ch == eof {
-			fmt.Println("eof")
 			break
 		} else if !isHyphen(ch) {
-			fmt.Println("!hyphen")
+			s.r.unread()
+			break
+		} else if i > 2 {
 			s.r.unread()
 			break
 		} else {
-			fmt.Println("writeRune")
 			_, _ = buf.WriteRune(ch)
+			i++
 		}
 	}
 
 	return CARD, pos, buf.String()
 }
 
-// Given a found `-` hyphen, the next three characters should also be `-`
+// FIXME: make it a struct method
+// Given a `-` (hyphen), the next three characters should also be `-`
 func isCard(s *Scanner, depth int) bool {
 	ch, _ := s.r.read()
-	fmt.Printf("d: %d, ch: %s\n", depth, string(ch))
+
+	// fmt.Printf("d: %d, ch: %s\n", depth, string(ch))
 
 	if !isHyphen(ch) || depth > 2 {
 		s.r.unreadRepeat(depth + 1)
@@ -126,7 +143,6 @@ func isCard(s *Scanner, depth int) bool {
 		return isCard(s, depth+1)
 	}
 
-	fmt.Println("true")
 	s.r.unreadRepeat(depth + 1)
 	return true
 }
