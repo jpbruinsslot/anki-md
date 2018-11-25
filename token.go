@@ -1,4 +1,4 @@
-package anki
+package main
 
 type Token int
 

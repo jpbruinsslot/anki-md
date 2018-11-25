@@ -1,4 +1,4 @@
-package anki_test
+package main_test
 
 import (
 	"reflect"

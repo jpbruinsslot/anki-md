@@ -2,7 +2,7 @@
 // when for instance we would encounter a token that was not allowed in a
 // particular sequence, or parsing error occurred, then it is necessary to
 // `unscan` that token.
-package anki
+package main
 
 import "io"
 

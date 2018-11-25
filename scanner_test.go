@@ -1,10 +1,10 @@
-package anki_test
+package main_test
 
 import (
 	"strings"
 	"testing"
 
-	"github.com/erroneousboat/anki-md"
+	anki "github.com/erroneousboat/anki-md"
 )
 
 func TestScanner_Scan(t *testing.T) {
