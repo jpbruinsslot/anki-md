@@ -144,7 +144,7 @@ func (s *Scanner) scanCard() (token Token, pos Pos, lit string) {
 	return CARD, pos, buf.String()
 }
 
-// scanWhiteSpace will WHITESPACE Tokens
+// scanWhiteSpace will scan WHITESPACE Tokens
 func (s *Scanner) scanWhitespace() (token Token, pos Pos, lit string) {
 	// Save the position of the field
 	_, pos = s.r.curr()
