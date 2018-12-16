@@ -15,6 +15,8 @@ $ go get -u github.com/erroneousboat/anki-md
 Usage
 -----
 
+#### Command line usage:
+
 ```
 NAME:
     anki-md - markdown to anki flash cards converter
@@ -37,10 +39,28 @@ WEBSITE:
     https://github.com/erroneousboat/anki-md
 
 GLOBAL OPTIONS:
-    -i, -input [input-file]
-    -o, -output [output-file]
+    -i, -input [input-file]     input file
+    -o, -output [output-file]   output file
+    -html                       convert field content to html
     -h, -help
 ```
+
+#### Deck creation
+
+Create your deck, cards and fields as follows:
+
+```
+%% Who wrote the book "The C Programming Language"?
+
+%% Brian W. Kernighan and Dennis M. Ritchie
+
+---
+```
+
+| identifier | explanation                                             |
+|------------|---------------------------------------------------------|
+| `%%`       | represents a field, you can use multiple field per card |
+| `---`      | represent a card                                        |
 
 Credits
 -------
