@@ -55,6 +55,20 @@ Create your deck, cards and fields as follows:
 %% Brian W. Kernighan and Dennis M. Ritchie
 
 ---
+
+%% Create a hello world program
+
+%%
+
+` ```
+#include <stdio.h>
+
+int main()
+{
+    printf("hello, world\n");
+}
+` ```
+
 ```
 
 | identifier | explanation                                             |
