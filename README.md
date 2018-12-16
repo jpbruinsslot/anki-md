@@ -40,7 +40,7 @@ GLOBAL OPTIONS:
     -i, -input [input-file]
     -o, -output [output-file]
     -h, -help
-    ```
+```
 
 Credits
 -------
