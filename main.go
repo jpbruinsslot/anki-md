@@ -16,6 +16,14 @@ const (
 USAGE:
     anki-md -i [input-file] -o [output-file]
 
+EXAMPLES:
+
+    $ anki-md -i deck.md -o deck.csv
+
+    $ cat deck.md | anki-md -o deck.csv
+
+    $ anki-md -i deck.md > test.csv
+
 VERSION:
     %s
 
