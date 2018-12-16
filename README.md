@@ -5,6 +5,16 @@ A markdown to anki flash cards converter
 
 Installation
 ------------
+#### Binary installation
+
+[Download](https://github.com/erroneousboat/anki-md/releases) a
+compatible binary for your system. For convenience, place `anki-md` in a
+directory where you can access it from the command line. Usually this is
+`/usr/local/bin`.
+
+```bash
+$ mv anki-md /usr/local/bin
+```
 
 #### Via Go
 
