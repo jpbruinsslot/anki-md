@@ -3,16 +3,25 @@ package main
 import (
 	"encoding/csv"
 	"os"
+
+	bf "gopkg.in/russross/blackfriday.v2"
 )
 
+const (
+	HTML Option = 1 << iota
+)
+
+type Option int
+
 type DeckWriter struct {
-	fp *os.File
+	fp      *os.File
+	options Option
 }
 
 // NewDeckWriter return the DeckWriter struct which contain a filepointer `fp`
 // to which the Deck can be written to.
-func NewDeckWriter(fp *os.File) *DeckWriter {
-	return &DeckWriter{fp: fp}
+func NewDeckWriter(fp *os.File, options Option) *DeckWriter {
+	return &DeckWriter{fp: fp, options: options}
 }
 
 // WriteDeck will write the Deck to the filepointer `fp` in a specified format
@@ -32,9 +41,18 @@ func (dw *DeckWriter) writeToCSV(d *Deck) error {
 
 	for _, c := range d.Cards {
 		var row []string
+
 		for _, f := range c.Fields {
-			row = append(row, f.Content)
+			var c string
+			switch dw.options {
+			case HTML:
+				c = string(bf.Run([]byte(f.Content)))
+			default:
+				c = f.Content
+			}
+			row = append(row, c)
 		}
+
 		csvWriter.Write(row)
 	}
 

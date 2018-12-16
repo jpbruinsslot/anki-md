@@ -1,0 +1,19 @@
+{
+	"comment": "",
+	"ignore": "test",
+	"package": [
+		{
+			"checksumSHA1": "HkNUuhYSk5C2fTMa536jBiORq44=",
+			"path": "github.com/shurcooL/sanitized_anchor_name",
+			"revision": "86672fcb3f950f35f2e675df2240550f2a50762f",
+			"revisionTime": "2017-09-05T02:47:45Z"
+		},
+		{
+			"checksumSHA1": "tI/ToPDECF8HQlpJP/omBQF0igw=",
+			"path": "gopkg.in/russross/blackfriday.v2",
+			"revision": "d3b5b032dc8e8927d31a5071b56e14c89f045135",
+			"revisionTime": "2018-09-20T17:16:15Z"
+		}
+	],
+	"rootPath": "github.com/erroneousboat/anki-md"
+}

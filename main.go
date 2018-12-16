@@ -31,8 +31,9 @@ WEBSITE:
     https://github.com/erroneousboat/anki-md
 
 GLOBAL OPTIONS:
-    -i, -input [input-file]
-    -o, -output [output-file]
+    -i, -input [input-file]     input file
+    -o, -output [output-file]   output file
+    -html                       convert field content to html
     -h, -help
 `
 )
@@ -40,6 +41,7 @@ GLOBAL OPTIONS:
 var (
 	flgInput  string
 	flgOutput string
+	flgHTML   bool
 )
 
 func init() {
@@ -71,6 +73,13 @@ func init() {
 		"output file",
 	)
 
+	flag.BoolVar(
+		&flgHTML,
+		"html",
+		false,
+		"convert field content to html",
+	)
+
 	flag.Usage = func() {
 		fmt.Printf(USAGE, VERSION)
 	}
@@ -81,6 +90,7 @@ func init() {
 func main() {
 	var err error
 
+	// Input
 	var r io.Reader
 	if flgInput != "" {
 		r, err = os.Open(flgInput)
@@ -91,6 +101,7 @@ func main() {
 		r = os.Stdin
 	}
 
+	// Output
 	var fp *os.File
 	if flgOutput != "" {
 		fp, err = os.Create(flgOutput)
@@ -102,12 +113,20 @@ func main() {
 		fp = os.Stdout
 	}
 
+	// Flag options
+	var options Option
+	if flgHTML {
+		options = options | HTML
+	}
+
+	// Parse input
 	d, err := NewParser(r).ParseDeck()
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	err = NewDeckWriter(fp).WriteDeck(d)
+	// Write output
+	err = NewDeckWriter(fp, options).WriteDeck(d)
 	if err != nil {
 		log.Fatal(err)
 	}
