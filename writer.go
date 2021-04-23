@@ -4,7 +4,7 @@ import (
 	"encoding/csv"
 	"os"
 
-	bf "gopkg.in/russross/blackfriday.v2"
+	bf "github.com/russross/blackfriday/v2"
 )
 
 const (

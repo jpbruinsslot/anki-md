@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	VERSION = "0.1.0"
+	VERSION = "0.1.1"
 	USAGE   = `NAME:
     anki-md - markdown to anki flash cards converter
 
@@ -83,11 +83,11 @@ func init() {
 	flag.Usage = func() {
 		fmt.Printf(USAGE, VERSION)
 	}
-
-	flag.Parse()
 }
 
 func main() {
+	flag.Parse()
+
 	var err error
 
 	// Input
