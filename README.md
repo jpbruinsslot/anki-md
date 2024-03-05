@@ -1,31 +1,24 @@
-anki-md 
-=======
+# 📚 anki-md
 
 A markdown to anki flash cards converter
 
-Installation
-------------
-#### Binary installation
+## 📦 Installation
 
-[Download](https://github.com/erroneousboat/anki-md/releases) a
+### Binary installation
+
+[Download](https://github.com/jpbruinsslot/anki-md/releases) a
 compatible binary for your system. For convenience, place `anki-md` in a
-directory where you can access it from the command line. Usually this is
-`/usr/local/bin`.
+directory where you can access it from the command line.
+
+### Via Go
 
 ```bash
-$ mv anki-md /usr/local/bin
+$ go install github.com/jpbruinsslot/anki-md
 ```
 
-#### Via Go
+## 💻 Usage
 
-```bash
-$ go get -u github.com/erroneousboat/anki-md
-```
-
-Usage
------
-
-#### Command line usage:
+### Command line usage
 
 ```
 NAME:
@@ -41,12 +34,12 @@ EXAMPLES:
     $ cat deck.md | anki-md -o deck.csv
 
     $ anki-md -i deck.md > test.csv
-    
+
 VERSION:
     0.1.0
 
 WEBSITE:
-    https://github.com/erroneousboat/anki-md
+    https://github.com/jpbruinsslot/anki-md
 
 GLOBAL OPTIONS:
     -i, -input [input-file]     input file
@@ -55,7 +48,7 @@ GLOBAL OPTIONS:
     -h, -help
 ```
 
-#### Deck creation
+### Deck creation
 
 Create your deck, cards and fields as follows:
 
@@ -82,16 +75,6 @@ int main()
 ```
 
 | identifier | explanation                                             |
-|------------|---------------------------------------------------------|
+| ---------- | ------------------------------------------------------- |
 | `%%`       | represents a field, you can use multiple field per card |
 | `---`      | represent a card                                        |
-
-Credits
--------
-
-Sources that helped me write this:
-
-- https://blog.gopheracademy.com/advent-2014/parsers-lexers/
-- http://blog.leahhanson.us/post/recursecenter2016/recipeparser.html
-- https://github.com/influxdata/influxql
-- https://github.com/benbjohnson/sql-parser

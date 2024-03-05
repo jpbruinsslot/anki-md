@@ -4,7 +4,7 @@ import (
 	"strings"
 	"testing"
 
-	anki "github.com/erroneousboat/anki-md"
+	anki "github.com/jpbruinsslot/anki-md"
 )
 
 func TestScanner_Scan(t *testing.T) {

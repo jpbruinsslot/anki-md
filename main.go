@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	VERSION = "0.1.1"
+	VERSION = "0.1.2"
 	USAGE   = `NAME:
     anki-md - markdown to anki flash cards converter
 
@@ -28,7 +28,7 @@ VERSION:
     %s
 
 WEBSITE:
-    https://github.com/erroneousboat/anki-md
+    https://github.com/jpbruinsslot/anki-md
 
 GLOBAL OPTIONS:
     -i, -input [input-file]     input file

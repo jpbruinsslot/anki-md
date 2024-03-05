@@ -1,6 +1,6 @@
 default: test
 
-# -timeout 	timout in seconds
+# -timeout 	timeout in seconds
 #  -v		verbose output
 test:
 	@ echo "+ $@"
@@ -38,24 +38,13 @@ build:
 	@ echo "+ $@"
 	@ CGO_ENABLED=0 go build -a -installsuffix cgo -o ./bin/anki-md .
 
-# Cross-compile
-# http://dave.cheney.net/2015/08/22/cross-compilation-with-go-1-5
 build-linux:
 	@ echo "+ $@"
 	@ GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -a -installsuffix cgo -o ./bin/anki-md-linux-amd64 .
 
-build-mac:
+build-darwin:
 	@ echo "+ $@"
 	@ GOOS=darwin GOARCH=amd64 CGO_ENABLED=0 go build -a -installsuffix cgo -o ./bin/anki-md-darwin-amd64 .
 
-run: build
-	@ echo "+ $@"
-	@ ./bin/anki-md
 
-install:
-	@ echo "+ $@"
-	@ go install .
-
-build-all: build build-linux build-mac
-
-.PHONY: default test build build-linux build-mac run install
+.PHONY: default test build build-linux build-darwin

@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	anki "github.com/erroneousboat/anki-md"
+	anki "github.com/jpbruinsslot/anki-md"
 )
 
 func TestParser_ParseDeck(t *testing.T) {
